@@ -2,14 +2,6 @@
   "name": "back-end",
   "version": "1.0.0",
   "description": "Simple expenditure api",
-  "homepage": "https://github.com/jeettamang/Expenses-form#readme",
-  "bugs": {
-    "url": "https://github.com/jeettamang/Expenses-form/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeettamang/Expenses-form.git"
-  },
   "license": "ISC",
   "author": "Jeet Tamang",
   "type": "module",

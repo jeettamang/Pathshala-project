@@ -7,6 +7,7 @@ import Error from "./pages/Error";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/admin/Dashboard";
+import ExpensesForm from "./pages/admin/ExpensesForm";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         {/*Admin*/}
         <Route path="/admin">
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="expenses" element={<ExpensesForm />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

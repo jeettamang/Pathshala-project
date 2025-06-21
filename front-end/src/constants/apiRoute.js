@@ -5,4 +5,5 @@ const API_URL = "/api/v1";
 export const URLS = {
   REGISTER: API_URL + "/users/register",
   LOGIN: API_URL + "/users/login",
+  EXPENSE: API_URL + "/expense",
 };

@@ -34,7 +34,7 @@ const Register = () => {
       console.log(resData);
       setPayload({ name: "", email: "", password: "" });
       setTimeout(() => {
-        navigate("/auth/login");
+        navigate("/admin/dashboard");
       }, 1000);
     } catch (error) {
       setMessage(

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import instance from "../../utils/axios";
 import { URLS } from "../../constants/apiRoute";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +36,7 @@ const ExpensesForm = () => {
       });
 
       setTimeout(() => {
-        navigate("/payment");
+        navigate("/admin/balance");
       }, 1000);
     } catch (error) {
       console.log("Error in fetching expense API", error);
@@ -46,9 +46,9 @@ const ExpensesForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center p-4">
+    <div className="w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8">
       <ToastContainer />
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-6 sm:p-8">
+      <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 sm:p-8">
         <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
           Daily Expense Entry
         </h2>

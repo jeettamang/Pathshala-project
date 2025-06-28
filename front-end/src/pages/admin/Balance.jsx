@@ -1,19 +1,6 @@
-export const BASE_URL = import.meta.env.VITE_API_URL;
-
-const API_URL = "/api/v1";
-
-export const URLS = {
-  REGISTER: API_URL + "/users/register",
-  LOGIN: API_URL + "/users/login",
-  EXPENSE: API_URL + "/expense",
-  UPDATE_BALANCE: API_URL + "/update-balance",
-  GET_BALANCE: API_URL + "/get-balance",
-};
-
-{
-  /**
-  import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import instance from "../../utils/axios";
+import { URLS } from "../../constants/apiRoute";
 
 const Balance = () => {
   const [balance, setBalance] = useState(0);
@@ -22,14 +9,13 @@ const Balance = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/balance");
-        setBalance(res.data.availableBalance || 0);
-        setLastDeduction(res.data.lastDeducted || 0);
+        const getBalance = await instance(URLS.GET_BALANCE, balance);
+        setBalance(getBalance.data.availableBalance);
+        setLastDeduction(getBalance.data.lastDeducted);
       } catch (err) {
         console.error("Error fetching balance:", err.message);
       }
     };
-
     fetchBalance();
   }, []);
 
@@ -38,13 +24,13 @@ const Balance = () => {
       <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
         <h2 className="text-lg font-bold">Available Balance</h2>
         <p className="text-2xl text-green-600">
-          Rs. {balance.toLocaleString()}
+          Rs. {(Number(balance) || 0).toLocaleString()}
         </p>
       </div>
       <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
         <h2 className="text-lg font-bold">Last Deducted</h2>
         <p className="text-2xl text-red-600">
-          Rs. {lastDeduction.toLocaleString()}
+          Rs. {(Number(lastDeduction) || 0).toLocaleString()}
         </p>
       </div>
     </div>
@@ -52,6 +38,3 @@ const Balance = () => {
 };
 
 export default Balance;
-  
-  **/
-}

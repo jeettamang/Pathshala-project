@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { connectionDB } from "./config/database.js";
 import userRoutes from "./routes/user.route.js";
 import expenseRoutes from "./routes/expense.route.js";
+import balanceRoutes from "./routes/balance.route.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cors());
 //Routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1", expenseRoutes);
+app.use("/api/v1", balanceRoutes);
 
 //Server
 connectionDB().then(() => {

@@ -20,20 +20,22 @@ const Balance = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 mt-4 px-4">
-      <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
-        <h2 className="text-lg font-bold">Available Balance</h2>
-        <p className="text-2xl text-green-600">
-          Rs. {(Number(balance) || 0).toLocaleString()}
-        </p>
+    <>
+      <div className="flex flex-col gap-4 mt-4 px-4">
+        <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
+          <h2 className="text-lg font-bold">Available Balance</h2>
+          <p className="text-2xl text-green-600">
+            Rs. {(Number(balance) || 0).toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
+          <h2 className="text-lg font-bold">Last Deducted</h2>
+          <p className="text-2xl text-red-600">
+            Rs. {(Number(lastDeduction) || 0).toLocaleString()}
+          </p>
+        </div>
       </div>
-      <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
-        <h2 className="text-lg font-bold">Last Deducted</h2>
-        <p className="text-2xl text-red-600">
-          Rs. {(Number(lastDeduction) || 0).toLocaleString()}
-        </p>
-      </div>
-    </div>
+    </>
   );
 };
 

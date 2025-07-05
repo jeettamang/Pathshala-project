@@ -3,9 +3,10 @@ import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ExpensesForm from "./pages/admin/ExpensesForm";
-import Balance from "./pages/admin/Balance";
 import Error from "./pages/Error";
 import AdminLayout from "./layout/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import IncomeForm from "./pages/admin/Incomes";
 
 const App = () => {
   return (
@@ -17,10 +18,13 @@ const App = () => {
       </Route>
 
       {/* Admin Routes */}
+
       <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="add-income" element={<IncomeForm />} />
         <Route path="create" element={<Register />} />
         <Route path="expense" element={<ExpensesForm />} />
-        <Route path="balance" element={<Balance />} />
       </Route>
 
       <Route path="*" element={<Error />} />

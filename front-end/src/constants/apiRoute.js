@@ -1,57 +1,12 @@
-export const BASE_URL = import.meta.env.VITE_API_URL;
+export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8888";
 
 const API_URL = "/api/v1";
 
 export const URLS = {
   REGISTER: API_URL + "/users/register",
   LOGIN: API_URL + "/users/login",
-  EXPENSE: API_URL + "/expense",
-  UPDATE_BALANCE: API_URL + "/update-balance",
+  EXPENSE: API_URL + "/add-expense",
+  ADD_INCOME: API_URL + "/add-income",
   GET_BALANCE: API_URL + "/get-balance",
+  GET_DASHBOARD: API_URL + "/dashboard-summary",
 };
-
-{
-  /**
-  import { useEffect, useState } from "react";
-import axios from "axios";
-
-const Balance = () => {
-  const [balance, setBalance] = useState(0);
-  const [lastDeduction, setLastDeduction] = useState(0);
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/balance");
-        setBalance(res.data.availableBalance || 0);
-        setLastDeduction(res.data.lastDeducted || 0);
-      } catch (err) {
-        console.error("Error fetching balance:", err.message);
-      }
-    };
-
-    fetchBalance();
-  }, []);
-
-  return (
-    <div className="flex flex-col gap-4 mt-4 px-4">
-      <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
-        <h2 className="text-lg font-bold">Available Balance</h2>
-        <p className="text-2xl text-green-600">
-          Rs. {balance.toLocaleString()}
-        </p>
-      </div>
-      <div className="bg-white shadow p-4 rounded-xl flex justify-center items-center flex-col">
-        <h2 className="text-lg font-bold">Last Deducted</h2>
-        <p className="text-2xl text-red-600">
-          Rs. {lastDeduction.toLocaleString()}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default Balance;
-  
-  **/
-}

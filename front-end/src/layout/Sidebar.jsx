@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -46,13 +45,13 @@ const Sidebar = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
-                class="size-6"
+                className="size-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                 />
               </svg>
@@ -79,14 +78,14 @@ const Sidebar = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="ml-2 text-sm font-medium">New entry</span>
+              <span className="ml-2 text-sm font-medium">Add expense</span>
             </Link>
           </div>
 
           <div className="flex flex-col items-center w-full mt-2 border-gray-700">
             <Link
               className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-              to="/admin/balance"
+              to="/admin/add-income"
             >
               <svg
                 className="w-6 h-6 stroke-current"
@@ -101,7 +100,7 @@ const Sidebar = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="ml-2 text-sm font-medium">Balance</span>
+              <span className="ml-2 text-sm font-medium">Add income</span>
             </Link>
           </div>
         </div>

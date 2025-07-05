@@ -83,7 +83,7 @@ export const loginController = async (req, res) => {
         email: user.email,
       },
       process.env.JWT_TOKEN,
-      { expiresIn: "1d" }
+      { expiresIn: "1h" }
     );
 
     return res.status(201).json({

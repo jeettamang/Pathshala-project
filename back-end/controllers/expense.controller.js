@@ -1,34 +1,72 @@
-import expenseModel from "../models/expense.model.js";
+import ExpenseModel from "../models/expense.model.js";
 
-export const expenseEntry = async (req, res) => {
+export const addExpense = async (req, res) => {
+  const { title, amount, category, description, date } = req.body;
+
+  const income = await ExpenseModel({
+    title,
+    amount,
+    description,
+    category,
+    date,
+  });
+
   try {
-    const { date, category, description, amount, paymentMethod } = req.body;
-    if (!date || !category || !description || !amount || !paymentMethod) {
-      return res.status(400).json({
-        error: true,
+    if (!title || !category || !description || !date) {
+      return res.status(500).json({
         message: "All fields are required",
-        success: false,
       });
     }
-    const newExpense = await expenseModel.create({
-      date,
-      category,
-      description,
-      amount,
-      paymentMethod,
-    });
+    if (amount <= 0 || !amount === "number") {
+      return res.status(400).json({
+        message: "Amount must be positive number",
+      });
+    }
+    await income.save();
     res.status(200).json({
-      error: false,
-      success: true,
-      message: "Expense created sucessfully",
-      data: newExpense,
+      message: "Expense added successful",
     });
   } catch (error) {
-    console.error("error occured during expense entry", error);
+    return res.status(500).json({
+      message: "Server error",
+      error,
+    });
+  }
+};
+
+export const getAllExpenses = async (req, res) => {
+  try {
+    const allIncome = await ExpenseModel.find().sort({ createdAt: -1 });
+    res.status(200).json({
+      message: "All Expenses",
+      allIncome,
+    });
+  } catch (error) {
     res.status(500).json({
-      error: true,
-      success: false,
-      message: "Expense server error",
+      message: "Server error",
+      error,
+    });
+  }
+};
+
+export const deleteExpense = async (req, res) => {
+  const expenseId = req.params.id;
+
+  try {
+    const deletedExpense = await ExpenseModel.findByIdAndDelete(expenseId);
+
+    if (!deletedExpense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    res.status(200).json({
+      message: "Expense amount deleted successfully",
+      deletedExpense,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Expense amount delete failed...",
+      error: error.message,
     });
   }
 };

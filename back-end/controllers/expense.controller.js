@@ -3,7 +3,7 @@ import ExpenseModel from "../models/expense.model.js";
 export const addExpense = async (req, res) => {
   const { title, amount, category, description, date } = req.body;
 
-  const income = await ExpenseModel({
+  const NewIncome = new ExpenseModel({
     title,
     amount,
     description,
@@ -13,21 +13,22 @@ export const addExpense = async (req, res) => {
 
   try {
     if (!title || !category || !description || !date) {
-      return res.status(500).json({
+      return res.status(400).json({
         message: "All fields are required",
       });
     }
-    if (amount <= 0 || !amount === "number") {
+    if (typeof amount !== "number" || amount <= 0) {
       return res.status(400).json({
-        message: "Amount must be positive number",
+        message: "Amount must be a positive number",
       });
     }
-    await income.save();
+
+    await NewIncome.save();
     res.status(200).json({
       message: "Expense added successful",
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(400).json({
       message: "Server error",
       error,
     });

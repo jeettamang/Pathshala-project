@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 const incomeSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     amount: {
       type: Number,
       required: true,

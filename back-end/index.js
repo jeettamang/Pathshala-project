@@ -4,10 +4,11 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import { connectionDB } from "./config/database.js";
-import userRoutes from "./routes/user.route.js";
-import expenseRoutes from "./routes/expense.route.js";
+import adminRoutes from "./routes/admin.route.js";
 import balanceRoutes from "./routes/income.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
+import expenseRoutes from "./routes/expense.route.js";
+import userRoutes from "./routes/user.route.js";
 
 dotenv.config();
 
@@ -22,10 +23,12 @@ app.use(morgan("dev"));
 app.use(cors());
 
 //Routes
-app.use("/api/v1/users", userRoutes);
-app.use("/api/v1", expenseRoutes);
-app.use("/api/v1", balanceRoutes);
-app.use("/api/v1", dashboardRoutes);
+app
+  .use("/api/v1/admin", adminRoutes)
+  .use("/api/v1/users", userRoutes)
+  .use("/api/v1", expenseRoutes)
+  .use("/api/v1", balanceRoutes)
+  .use("/api/v1", dashboardRoutes);
 
 //Global error handling
 app.use((error, req, res, next) => {

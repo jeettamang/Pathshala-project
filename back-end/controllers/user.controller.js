@@ -2,16 +2,29 @@ import UserModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-export const registerController = async (req, res) => {
+//Add user
+export const addUserController = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, course, payment } = req.body;
+    if (!name || !email || !password || !course) {
       return res.status(400).json({
         error: true,
         message: "All fields are required",
         success: false,
       });
     }
+    const courseFees = {
+      "Mern stack development": 15000,
+      "python with Django": 7000,
+      Nextjs: 1499,
+      Reactjs: 1999,
+      "AI/ML": 4999,
+      "Digital marketing": 2499,
+      "Graphics designing": 1499,
+    };
+
+    const totalFee = courseFees[course] || 0;
+    const remaining = totalFee - Number(payment);
 
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
@@ -28,79 +41,73 @@ export const registerController = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      course,
+      payment,
+      remaining,
     });
 
     res.status(200).json({
       message: "User registered successfully",
-      success: true,
-      error: false,
-      user: {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-      },
+      newUser,
     });
   } catch (error) {
     return res.status(500).json({
-      error: true,
       message: "Error in registration",
-      success: false,
+      error: error.message,
     });
   }
 };
 
-export const loginController = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({
-        error: true,
-        message: "Email and Password are required",
-        success: false,
-      });
-    }
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      return res.status(404).json({
-        error: true,
-        message: "User not found",
-        success: false,
-      });
-    }
-    const passwordCompare = bcrypt.compareSync(password, user.password);
-
-    if (!passwordCompare) {
-      return res.status(401).json({
-        error: true,
-        message: "Invalid password",
-        success: false,
-      });
-    }
-
-    const token = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-      },
-      process.env.JWT_TOKEN,
-      { expiresIn: "1h" }
-    );
-
-    return res.status(201).json({
-      error: false,
-      message: "User Login successful",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-      token,
+    const users = await UserModel.find();
+    res.status(200).json({
+      success: true,
+      users,
     });
   } catch (error) {
-    return res.status(500).json({
-      error: true,
-      message: "Error in Login",
+    res.status(500).json({
       success: false,
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
+};
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await UserModel.findByIdAndDelete(id);
+    res.status(200).json({
+      message: "User deleted successfully",
+      deletedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "User not found",
+      error: error.message,
+    });
+  }
+};
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    if (!updateData) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
+    res.status(200).json({
+      message: "User updated successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating user",
+      error: error.message,
     });
   }
 };

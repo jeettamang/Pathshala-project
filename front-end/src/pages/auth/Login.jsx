@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import instance from "../../utils/axios";
 import { URLS } from "../../constants/apiRoute";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,10 +33,19 @@ const Login = () => {
     try {
       const resData = await instance.post(URLS.LOGIN, payload);
       console.log(resData);
-      setPayload({ name: "", email: "", password: "" });
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      if (resData.status === 200) {
+        toast.success("Admin login successful");
+        setPayload({
+          name: "",
+          email: "",
+          password: "",
+        });
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 1000);
+      } else {
+        toast.error("Admin login error");
+      }
     } catch (error) {
       setMessage(
         error.response?.data?.message || "Error in fetching the data of login"
@@ -45,7 +55,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-6 sm:p-8">
-        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Login to your Account
         </h2>
         <form
@@ -118,7 +128,7 @@ const Login = () => {
           <p className="text-center text-sm text-gray-600 mt-4">
             Dont't have an account?
             <Link
-              to="/register"
+              to="/auth/register"
               className="text-blue-600 font-medium hover:underline"
             >
               Register

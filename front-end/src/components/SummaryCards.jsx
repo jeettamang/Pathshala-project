@@ -1,5 +1,3 @@
-import React from "react";
-
 const SummaryCards = ({ label, amount, color }) => {
   return (
     <div className={`p-4 rounded-xl shadow ${color}`}>

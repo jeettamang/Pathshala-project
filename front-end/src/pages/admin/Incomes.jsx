@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 const IncomeForm = () => {
   const navigate = useNavigate();
   const [income, setIncome] = useState({
-    title: "",
     date: "",
     category: "",
     description: "",
@@ -33,7 +32,6 @@ const IncomeForm = () => {
       setMsg("Income created successfully");
       toast("Income successfully created");
       setIncome({
-        title: "",
         date: "",
         category: "",
         description: "",
@@ -55,28 +53,11 @@ const IncomeForm = () => {
       <div className="w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8">
         <ToastContainer />
         <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 sm:p-8">
-          <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Entry Incomes
           </h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             {" "}
-            <div>
-              <label
-                htmlFor="Date"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Title
-              </label>
-              <input
-                type="title"
-                id="title"
-                name="title"
-                value={income.title}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              />
-            </div>{" "}
             <div>
               <label
                 htmlFor="Date"

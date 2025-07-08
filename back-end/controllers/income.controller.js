@@ -2,9 +2,9 @@ import IncomeModel from "../models/income.model.js";
 
 export const addIncome = async (req, res) => {
   try {
-    const { title, amount, category, description, date } = req.body;
+    const { amount, category, description, date } = req.body;
 
-    if (!title || !category || !description || !date) {
+    if (!category || !description || !date) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -15,7 +15,6 @@ export const addIncome = async (req, res) => {
     }
 
     const income = new IncomeModel({
-      title,
       amount,
       description,
       category,

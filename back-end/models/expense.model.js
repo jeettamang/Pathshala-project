@@ -2,20 +2,11 @@ import mongoose from "mongoose";
 
 const expenseSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     amount: {
       type: Number,
       required: true,
 
       trim: true,
-    },
-    type: {
-      type: String,
-      defaulf: "income",
     },
     date: {
       type: Date,
@@ -30,8 +21,12 @@ const expenseSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-
       trim: true,
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["Esewa", "Khalti", "Bank transfer", "Cash"],
+      default: "Cash",
     },
   },
   {

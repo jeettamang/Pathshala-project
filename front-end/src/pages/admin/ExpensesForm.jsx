@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 const ExpensesForm = () => {
   const navigate = useNavigate();
   const [expense, setExpense] = useState({
-    title: "",
     date: "",
     category: "",
     description: "",
@@ -22,9 +21,14 @@ const ExpensesForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const finalAmount = {
+      ...expense,
+      amount: Number(expense.amount),
+    };
+
     //backed-api
     try {
-      const expenseRes = await instance.post(URLS.EXPENSE, expense);
+      const expenseRes = await instance.post(URLS.EXPENSE, finalAmount);
       console.log(expenseRes);
       setMsg("Expense Created successfully");
       toast("Expense successfully created");
@@ -52,28 +56,11 @@ const ExpensesForm = () => {
       <div className="w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8">
         <ToastContainer />
         <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 sm:p-8">
-          <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
-            Daily Expense Entry
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+            Expense Entry
           </h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             {" "}
-            <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Title
-              </label>
-              <input
-                type="title"
-                id="title"
-                name="title"
-                value={expense.title}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              />
-            </div>
             <div>
               <label
                 htmlFor="Date"

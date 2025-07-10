@@ -14,7 +14,7 @@ export const addExpense = async (req, res) => {
   }
 
   try {
-    const newExpense = new ExpenseModel({
+    const newExpense = await ExpenseModel({
       amount,
       description,
       category,
@@ -22,8 +22,7 @@ export const addExpense = async (req, res) => {
       date,
     });
 
-    await newExpense.save();
-    res.status(200).json({ message: "Expense added successfully" });
+    res.status(200).json({ message: "Expense added successfully", newExpense });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }

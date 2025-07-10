@@ -11,4 +11,5 @@ export const URLS = {
   ADD_INCOME: API_URL + "/add-income",
   GET_BALANCE: API_URL + "/get-balance",
   GET_DASHBOARD: API_URL + "/dashboard-summary",
+  ADMIN_VERIFY: API_URL + "/admin/verify",
 };

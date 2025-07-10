@@ -13,9 +13,12 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchDashboardData = async () => {
       try {
-        const res = await instance.get(URLS.GET_DASHBOARD);
+        const res = await instance.get(URLS.GET_DASHBOARD, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setSummary(res.data.summary);
         setExpenses(res.data.expenses);
         setIncomes(res.data.incomes);

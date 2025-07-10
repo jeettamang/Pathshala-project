@@ -10,6 +10,7 @@ import IncomeForm from "./pages/admin/Incomes";
 import List from "./pages/admin/users/List";
 import AddUser from "./pages/admin/users/AddUser";
 import Register from "./pages/auth/Register";
+import ManageCategory from "./pages/ManageCategory";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="create" element={<AddUser />} />
         <Route path="users/list" element={<List />} />
         <Route path="expense" element={<ExpensesForm />} />
+        <Route path="category" element={<ManageCategory />} />
       </Route>
 
       <Route path="*" element={<Error />} />

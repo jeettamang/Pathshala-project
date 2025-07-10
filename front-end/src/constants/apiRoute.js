@@ -12,4 +12,7 @@ export const URLS = {
   GET_BALANCE: API_URL + "/get-balance",
   GET_DASHBOARD: API_URL + "/dashboard-summary",
   ADMIN_VERIFY: API_URL + "/admin/verify",
+  ADD_CATEGORY: API_URL + "/add-category",
+  GET_CATEGORIES: API_URL + "/all-categories",
+  DEL_CATEGORY: API_URL + "/del-category",
 };

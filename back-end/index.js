@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { connectionDB } from "./config/database.js";
 import adminRoutes from "./routes/admin.route.js";
 import balanceRoutes from "./routes/income.route.js";
+import categoryRoutes from "./routes/category.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 import expenseRoutes from "./routes/expense.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -28,7 +29,8 @@ app
   .use("/api/v1/users", userRoutes)
   .use("/api/v1", expenseRoutes)
   .use("/api/v1", balanceRoutes)
-  .use("/api/v1", dashboardRoutes);
+  .use("/api/v1", dashboardRoutes)
+  .use("/api/v1", categoryRoutes);
 
 //Global error handling
 app.use((error, req, res, next) => {

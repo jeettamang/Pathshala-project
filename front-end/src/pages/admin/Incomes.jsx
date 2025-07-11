@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import instance from "../../utils/axios";
 import { URLS } from "../../constants/apiRoute";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const IncomeForm = () => {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
   const [income, setIncome] = useState({
     date: "",
     category: "",
@@ -48,6 +49,18 @@ const IncomeForm = () => {
     }
   };
 
+  const allCategories = async () => {
+    try {
+      const fetchCategories = await instance.get(URLS.GET_CATEGORIES, {
+        name: categories,
+      });
+      setCategories(fetchCategories.data);
+      console.log(fetchCategories);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    allCategories();
+  }, []);
   return (
     <>
       <div className="w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8">
@@ -93,13 +106,11 @@ const IncomeForm = () => {
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               >
                 <option value="">Select Category</option>
-                <option value="digital-marketing">Digital marketing</option>
-                <option value="mern-stack">Mern Stack</option>
-                <option value="reactjs">Reactjs</option>
-                <option value="nextjs">Nextjs</option>
-                <option value="python">Python with Django</option>
-                <option value="ai">AI/ML</option>
-                <option value="others">Others</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             {/* description */}

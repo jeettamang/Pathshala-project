@@ -57,8 +57,6 @@ export const loginController = async (req, res) => {
       });
     }
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Entered password:", password);
-    console.log("Stored hash:", user.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -72,6 +70,8 @@ export const loginController = async (req, res) => {
       {
         id: user._id,
         email: user.email,
+        name: user.name,
+        role: "admin",
       },
       process.env.JWT_TOKEN,
       { expiresIn: 60 * 60 }
@@ -93,5 +93,21 @@ export const loginController = async (req, res) => {
       message: "Error in Login",
       success: false,
     });
+  }
+};
+
+export const isAdminController = async (req, res) => {
+  try {
+    const admin = await AdminModel.findById(req.user.id).select("name email");
+
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    return res.status(200).json({ user: admin });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };

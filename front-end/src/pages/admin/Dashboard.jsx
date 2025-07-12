@@ -12,6 +12,8 @@ const Dashboard = () => {
     monthlyExpense: 0,
   });
 
+  const [filterDate, setFilterDate] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchDashboardData = async () => {
@@ -29,6 +31,22 @@ const Dashboard = () => {
 
     fetchDashboardData();
   }, []);
+
+  const formattedFilterDate = filterDate
+    ? new Date(filterDate).toLocaleDateString()
+    : "";
+
+  const filteredIncomes = filterDate
+    ? incomes.filter(
+        (inc) => new Date(inc.date).toLocaleDateString() === formattedFilterDate
+      )
+    : incomes;
+
+  const filteredExpenses = filterDate
+    ? expenses.filter(
+        (exp) => new Date(exp.date).toLocaleDateString() === formattedFilterDate
+      )
+    : expenses;
 
   return (
     <div className="p-6 space-y-6">
@@ -55,7 +73,24 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Expenses Table */}
+      {/* Date Filter */}
+      <div className="mb-4">
+        <label className="mr-2 font-medium">Filter by Date:</label>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="border px-2 py-1 rounded"
+        />
+        <button
+          onClick={() => setFilterDate("")}
+          className="ml-2 px-3 py-1 border rounded bg-gray-200"
+        >
+          Clear
+        </button>
+      </div>
+
+      {/* Incomes Table */}
       <div className="bg-white p-4 rounded-xl shadow">
         <h2 className="text-lg font-semibold mb-4">Recent Income</h2>
         <table className="w-full text-sm text-left py-2 my-2">
@@ -68,7 +103,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {incomes.map((income) => (
+            {filteredIncomes.map((income) => (
               <tr key={income._id} className="border-b">
                 <td className="py-2 px-3">
                   {new Date(income.date).toLocaleDateString()}
@@ -78,9 +113,19 @@ const Dashboard = () => {
                 <td className="py-2 px-3">{income.note || "-"}</td>
               </tr>
             ))}
+            {filteredIncomes.length === 0 && (
+              <tr>
+                <td colSpan="4" className="text-center py-4 text-gray-500">
+                  No income records found for this date.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
-        <hr className="text-indigo-400" />
+
+        <hr className="text-indigo-400 my-4" />
+
+        {/* Expenses Table */}
         <h2 className="text-lg font-semibold mb-4">Recent Expenses</h2>
         <table className="w-full text-sm text-left">
           <thead className="bg-red-100">
@@ -92,7 +137,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {expenses.map((exp) => (
+            {filteredExpenses.map((exp) => (
               <tr key={exp._id} className="border-b">
                 <td className="py-2 px-3">
                   {new Date(exp.date).toLocaleDateString()}
@@ -102,6 +147,13 @@ const Dashboard = () => {
                 <td className="py-2 px-3">{exp.note || "-"}</td>
               </tr>
             ))}
+            {filteredExpenses.length === 0 && (
+              <tr>
+                <td colSpan="4" className="text-center py-4 text-gray-500">
+                  No expense records found for this date.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

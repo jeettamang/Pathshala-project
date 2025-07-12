@@ -56,6 +56,7 @@ const Login = () => {
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center p-4">
+      <ToastContainer />
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-6 sm:p-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Login to your Account

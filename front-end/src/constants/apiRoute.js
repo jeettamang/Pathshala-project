@@ -15,4 +15,5 @@ export const URLS = {
   ADD_CATEGORY: API_URL + "/add-category",
   GET_CATEGORIES: API_URL + "/all-categories",
   DEL_CATEGORY: API_URL + "/del-category",
+  ADMIN_PROFILE: API_URL + "/admin/profile",
 };

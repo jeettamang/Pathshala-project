@@ -2,11 +2,9 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <>
-      <div>
-        <h5>All right reserved &copy;</h5>
-      </div>
-    </>
+    <footer className="text-center py-4 text-sm text-gray-500 bg-white shadow-inner">
+      All rights reserved &copy; {new Date().getFullYear()}
+    </footer>
   );
 };
 

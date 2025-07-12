@@ -4,13 +4,12 @@ import {
   deleteExpense,
   getAllExpenses,
 } from "../controllers/expense.controller.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 router
-  .post("/add-expense", verifyToken, addExpense)
-  .get("/all-expenses", verifyToken, getAllExpenses)
-  .delete("/delete-expense/:id", verifyToken, deleteExpense);
+  .post("/add-expense", addExpense)
+  .get("/all-expenses", getAllExpenses)
+  .delete("/delete-expense/:id", deleteExpense);
 
 export default router;

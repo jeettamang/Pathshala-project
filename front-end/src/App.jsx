@@ -11,6 +11,7 @@ import List from "./pages/admin/users/List";
 import AddUser from "./pages/admin/users/AddUser";
 import Register from "./pages/auth/Register";
 import ManageCategory from "./pages/ManageCategory";
+import Profile from "./pages/admin/Profile";
 
 const App = () => {
   return (
@@ -27,11 +28,16 @@ const App = () => {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
+
         <Route path="add-income" element={<IncomeForm />} />
-        <Route path="create" element={<AddUser />} />
-        <Route path="users/list" element={<List />} />
         <Route path="expense" element={<ExpensesForm />} />
         <Route path="category" element={<ManageCategory />} />
+        <Route path="profile" element={<Profile />} />
+
+        <Route path="users">
+          <Route index element={<List />} />
+          <Route path="create" element={<AddUser />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Error />} />

@@ -13,8 +13,6 @@ export const verifyToken = async (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
 
-  console.log(token);
-
   try {
     const decoded = await jwt.verify(token, process.env.JWT_TOKEN);
     req.user = decoded;

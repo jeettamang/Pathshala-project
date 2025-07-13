@@ -5,7 +5,9 @@
 ✅ User Authentication (Admin & User Roles)  
 ✅ Responsive UI with Sidebar Navigation  
 ✅ Expense Reports & Balance Overview  
-
+✅Admin profile
+✅protective route (Auth middleware)
+✅JWT TOKEN 
 
 # Frontend: 
 - React.js  

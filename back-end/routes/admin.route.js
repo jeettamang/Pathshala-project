@@ -11,7 +11,7 @@ import { isAdmin } from "../middlewares/isAdmin.js";
 const router = express.Router();
 
 router
-  .post("/create", registerAdmin)
+  .post("/register", verifyToken, isAdmin, registerAdmin)
   .post("/login", loginController)
   .get("/verify", adminVerify)
   .get("/profile", verifyToken, isAdmin, isAdminController);

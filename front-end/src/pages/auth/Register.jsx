@@ -20,9 +20,18 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in as admin");
+      return;
+    }
     e.preventDefault();
     try {
-      const response = await instance.post(URLS.REGISTER, payload);
+      const response = await instance.post(URLS.REGISTER, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log(response);
       if (response.status === 200) {
@@ -40,7 +49,7 @@ const Register = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong.");
+      toast.error("You are not a super admin!");
     }
   };
   return (

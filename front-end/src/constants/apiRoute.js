@@ -3,7 +3,7 @@ export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8888";
 const API_URL = "/api/v1";
 
 export const URLS = {
-  REGISTER: API_URL + "/admin/create",
+  REGISTER: API_URL + "/admin/register",
   LOGIN: API_URL + "/admin/login",
   ADD_USER: API_URL + "/users/create",
   USER_LIST: API_URL + "/users/get-all",

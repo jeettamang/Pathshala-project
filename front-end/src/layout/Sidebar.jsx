@@ -107,7 +107,7 @@ const Sidebar = () => {
         <div className="flex flex-col items-center w-full mt-2 border-gray-700">
           <Link
             className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-            to="/admin/users/list"
+            to="/admin/users"
           >
             <svg
               className="w-6 h-6 stroke-current"

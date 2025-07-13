@@ -6,6 +6,12 @@ import jwt from "jsonwebtoken";
 export const registerAdmin = async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
+    const adminAccess = req.user;
+    if (!adminAccess || adminAccess.email !== "jeettamang011@gmail.com") {
+      return res.status(403).json({
+        message: "Only admin can register new admin",
+      });
+    }
     if (!name || !email || !password) {
       return res.status(402).json({
         message: "All fields are required",
@@ -24,8 +30,9 @@ export const registerAdmin = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
+      role: "admin",
     });
-    await newAdmin.save();
+
     res.status(200).json({
       message: "Admin registered successfully",
       newAdmin,

@@ -12,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_TOKEN);
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN);
     req.user = decoded;
     next();
   } catch (error) {

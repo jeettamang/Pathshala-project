@@ -51,23 +51,28 @@ const Profile = () => {
   if (loading) return <p className="text-center mt-10">Loading profile...</p>;
 
   return (
-    <div className="p-6 max-w-xl mx-auto bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
-      <div className="space-y-3 text-gray-700">
-        <p>
-          <strong>Name:</strong> {user?.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {user?.email}
-        </p>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md mt-10 flex items-center space-x-6">
+      <img
+        src="/src/assets/profile.png"
+        alt="Profile"
+        className="w-32 h=50 rounded-md object-cover"
+      />
 
-        {isAllowed && (
-          <p className="text-green-600 font-medium">You are the Super Admin</p>
-        )}
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Your Profile</h2>
+        <p className="text-lg">
+          <span className="font-semibold">Name:</span> Jeet Tamang
+        </p>
+        <p className="text-lg">
+          <span className="font-semibold">Email:</span> jeettamang011@gmail.com
+        </p>
+        <p className="text-green-600 font-semibold mt-2">
+          You are the Super Admin
+        </p>
 
         <button
           onClick={handleLogout}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          className="mt-4 w-full py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Log Out
         </button>

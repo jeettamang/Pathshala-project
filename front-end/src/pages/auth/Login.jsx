@@ -1,59 +1,10 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import instance from "../../utils/axios";
-import { URLS } from "../../constants/apiRoute";
+import useLogin from "../../custom-hooks/useLogin";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [payload, setPayload] = useState({
-    email: "",
-    password: "",
-  });
-  const [message, setMessage] = useState("");
-  const handleChange = (e) => {
-    setPayload({
-      ...payload,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const { payload, message, handleChange, handleSubmit } = useLogin();
 
-    const { email, password } = payload;
-
-    if (!email || !password) {
-      setMessage("Email or Password mismatch");
-
-      return;
-    }
-
-    try {
-      const resData = await instance.post(URLS.LOGIN, payload);
-      console.log(resData);
-      if (resData.status === 200) {
-        toast.success("Admin login successful");
-        setPayload({
-          name: "",
-          email: "",
-          password: "",
-        });
-        localStorage.setItem("token", resData.data.token);
-
-        setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 1000);
-      } else {
-        toast.error("Admin login error");
-      }
-    } catch (error) {
-      setMessage(
-        error.response?.data?.message || "Error in fetching the data of login"
-      );
-    }
-  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center p-4">
       <ToastContainer />

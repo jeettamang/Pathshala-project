@@ -1,69 +1,11 @@
-import { useEffect, useState } from "react";
-import instance from "../../utils/axios";
-import { URLS } from "../../constants/apiRoute";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import useIncome from "../../custom-hooks/useIncome";
 
 const IncomeForm = () => {
-  const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-  const [income, setIncome] = useState({
-    date: "",
-    category: "",
-    description: "",
-    amount: "",
-  });
-  const [msg, setMsg] = useState("");
-  const handleChange = (e) => {
-    setIncome({ ...income, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-      ...income,
-      amount: Number(income.amount),
-    };
-
-    //backed-api
-    try {
-      const incomeRes = await instance.post(URLS.ADD_INCOME, payload);
-      console.log(incomeRes);
-      setMsg("Income created successfully");
-      toast("Income successfully created");
-      setIncome({
-        date: "",
-        category: "",
-        description: "",
-        amount: "",
-      });
-
-      setTimeout(() => {
-        navigate("/admin/dashboard");
-      }, 1000);
-    } catch (error) {
-      console.log("Error in fetching income API", error);
-      setMsg("Something went wrong.");
-      toast("Something went wrong");
-    }
-  };
-
-  const allCategories = async () => {
-    try {
-      const fetchCategories = await instance.get(URLS.GET_CATEGORIES, {
-        name: categories,
-      });
-      setCategories(fetchCategories.data);
-      console.log(fetchCategories);
-    } catch (error) {}
-  };
-  useEffect(() => {
-    allCategories();
-  }, []);
+  const { categories, income, handleChange, handleSubmit } = useIncome();
   return (
     <>
-      <div className="w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8">
+      <div className="w-full bg-white rounded-2xl p-6 sm:p-8">
         <ToastContainer />
         <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 sm:p-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">

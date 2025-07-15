@@ -1,57 +1,10 @@
-import React, { useEffect, useState } from "react";
-import instance from "../../utils/axios";
-import { URLS } from "../../constants/apiRoute";
+import useRegister from "../../custom-hooks/useRegister";
 import { ToastContainer, toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [payload, setPayload] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const { payload, handleChange, handleSubmit } = useRegister();
 
-  const handleChange = (e) => {
-    setPayload({
-      ...payload,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("You must be logged in as admin");
-      return;
-    }
-    e.preventDefault();
-    try {
-      const response = await instance.post(URLS.REGISTER, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log(response);
-      if (response.status === 200) {
-        toast.success("Admin registration successful!");
-        setPayload({
-          name: "",
-          email: "",
-          password: "",
-        });
-        setTimeout(() => {
-          navigate("/auth/login");
-        }, 1000);
-      } else {
-        toast.error("Admin registration failed.");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("You are not a super admin!");
-    }
-  };
   return (
     <div className="min-h-screen flex items-center place-content-center bg-gray-100 px-4">
       <ToastContainer />

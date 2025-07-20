@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import sendInvoice from "../utils/sendInvoice.js";
 
 //Add user
 export const addUserController = async (req, res) => {
@@ -46,6 +46,13 @@ export const addUserController = async (req, res) => {
       remaining,
     });
 
+    await sendInvoice({
+      to: email,
+      userName: name,
+      courseName: course,
+      amount: payment,
+    });
+
     res.status(200).json({
       message: "User registered successfully",
       newUser,
@@ -53,9 +60,11 @@ export const addUserController = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Error in registration",
+
       error: error.message,
     });
   }
+  console.log(error);
 };
 
 export const getAllUsers = async (req, res) => {

@@ -28,6 +28,11 @@ const expenseSchema = new mongoose.Schema(
       enum: ["Esewa", "Khalti", "Bank transfer", "Cash"],
       default: "Cash",
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

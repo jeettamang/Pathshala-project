@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import useSidebarLinks from "../custom-hooks/useSidebarLinks";
 
 const Sidebar = () => {
-  const links = useSidebarLinks(); // Get all sidebar links
+  const links = useSidebarLinks();
 
   return (
     <div className="flex w-60 flex-col h-full text-gray-400 bg-gray-900 fixed">
-      {/* Logo */}
       <Link className="flex items-center w-full px-3 mt-3" to="/">
         <span className="ml-2 text-sm font-bold">Expense Management</span>
       </Link>
@@ -36,7 +35,6 @@ const Sidebar = () => {
         ))}
       </div>
 
-      {/* Profile Button (optional to abstract) */}
       <Link
         className="flex items-center justify-start w-full h-10 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300"
         to="/admin/profile"

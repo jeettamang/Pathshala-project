@@ -13,6 +13,11 @@ export const verifyToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+
+    if (!decoded?.id) {
+      return res.status(403).json({ message: "Invalid token payload" });
+    }
+
     req.user = decoded;
     next();
   } catch (error) {

@@ -5,15 +5,16 @@ import jwt from "jsonwebtoken";
 //Admin register
 export const registerAdmin = async (req, res, next) => {
   const { name, email, password } = req.body;
+  console.log("User from token at /register:", req.user);
   try {
     const adminAccess = req.user;
-    if (!adminAccess || adminAccess.email !== "jeettamang011@gmail.com") {
-      return res.status(403).json({
+    if (!adminAccess || adminAccess.role !== "super-admin") {
+      return res.status(400).json({
         message: "Only admin can register new admin",
       });
     }
     if (!name || !email || !password) {
-      return res.status(402).json({
+      return res.status(400).json({
         message: "All fields are required",
       });
     }
@@ -30,7 +31,7 @@ export const registerAdmin = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      role: "admin",
+      role: "super-admin",
     });
 
     res.status(200).json({
@@ -55,15 +56,15 @@ export const loginController = async (req, res) => {
         success: false,
       });
     }
-    const user = await AdminModel.findOne({ email });
-    if (!user) {
+    const admin = await AdminModel.findOne({ email });
+    if (!admin) {
       return res.status(404).json({
         error: true,
-        message: "User not found",
+        message: "Admin not found",
         success: false,
       });
     }
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -75,10 +76,10 @@ export const loginController = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        role: "admin",
+        id: admin._id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
       },
       process.env.JWT_TOKEN,
       { expiresIn: 60 * 60 }
@@ -88,16 +89,18 @@ export const loginController = async (req, res) => {
       error: false,
       message: "User Login successful",
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        role: admin.role,
       },
       token,
     });
   } catch (error) {
+    console.error("LoginController error:", error);
     return res.status(500).json({
       error: true,
-      message: "Error in Login",
+      message: error.message || "Error in Login",
       success: false,
     });
   }
@@ -105,16 +108,21 @@ export const loginController = async (req, res) => {
 
 export const isAdminController = async (req, res) => {
   try {
-    const admin = await AdminModel.findById(req.user.id).select("name email");
+    console.log("User from token:", req.user);
+    const admin = await AdminModel.findById(req.user.id).select(
+      "name email role"
+    );
 
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
 
-    return res.status(200).json({ user: admin });
+    return res.status(200).json({ admin });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: error.message });
+    console.error("Error checking admin:", error);
+    return res.status(500).json({
+      message: "Server error while checking admin",
+      error: error.message,
+    });
   }
 };

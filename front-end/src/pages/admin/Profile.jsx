@@ -20,13 +20,12 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        const user = res.data.user;
+        const user = res.data.admin;
         setUser(user);
-
-        if (user?.email === "jeettamang011@gmail.com") {
+        if (user?.role === "super-admin") {
           setIsAllowed(true);
         }
+        console.log("Logged in user:", user);
       } catch (err) {
         console.error("Failed to fetch profile", err);
         redirectToLogin();
@@ -52,24 +51,28 @@ const Profile = () => {
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md mt-10 flex items-center space-x-6">
-      <img
-        src="/src/assets/profile.png"
-        alt="Profile"
-        className="w-32 h=50 rounded-md object-cover"
-      />
+      {user?.email === "jeettamang011@gmail.com" && (
+        <img
+          src="/src/assets/profile.png"
+          alt="Profile"
+          className="w-32 h-32 rounded-md object-cover"
+        />
+      )}
 
       <div>
         <h2 className="text-2xl font-bold mb-4">Your Profile</h2>
         <p className="text-lg">
-          <span className="font-semibold">Name:</span> Jeet Tamang
+          <span className="font-semibold">Name:</span> {user?.name}
         </p>
         <p className="text-lg">
-          <span className="font-semibold">Email:</span> jeettamang011@gmail.com
-        </p>
-        <p className="text-green-600 font-semibold mt-2">
-          You are the Super Admin
+          <span className="font-semibold">Email:</span> {user?.email}
         </p>
 
+        {user && user.role === "super-admin" && (
+          <p className="text-green-600 font-semibold mt-2">
+            You are the Super Admin
+          </p>
+        )}
         <button
           onClick={handleLogout}
           className="mt-4 w-full py-2 bg-red-500 text-white rounded hover:bg-red-600"

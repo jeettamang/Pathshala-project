@@ -20,12 +20,11 @@ const useIncome = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = {
       ...income,
       amount: Number(income.amount),
     };
-
+    console.log("Sending payload:", payload);
     //backed-api
     try {
       const incomeRes = await instance.post(URLS.ADD_INCOME, payload);

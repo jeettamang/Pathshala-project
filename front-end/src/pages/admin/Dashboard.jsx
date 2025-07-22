@@ -8,7 +8,19 @@ const Dashboard = () => {
     setFilterDate,
     filteredIncomes,
     filteredExpenses,
+    incomesThisFiscalYear,
+    expensesThisFiscalYear,
+    fiscalLabel,
   } = useDashboard();
+
+  const totalIncomeFY = incomesThisFiscalYear.reduce(
+    (sum, i) => sum + i.amount,
+    0
+  );
+  const totalExpenseFY = expensesThisFiscalYear.reduce(
+    (sum, e) => sum + e.amount,
+    0
+  );
 
   return (
     <div className="p-6 space-y-6">
@@ -29,9 +41,20 @@ const Dashboard = () => {
           color="bg-blue-100"
         />
         <SummaryCards
-          label="This Month"
+          label="This Month(Ex)"
           amount={summary.monthlyExpense}
           color="bg-yellow-100"
+        />
+        <SummaryCards
+          label={`FY Expense (${fiscalLabel})`}
+          amount={totalExpenseFY}
+          color="bg-yellow-100"
+        />
+
+        <SummaryCards
+          label={`FY Income (${fiscalLabel})`}
+          amount={totalIncomeFY}
+          color="bg-green-200"
         />
       </div>
 

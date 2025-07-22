@@ -1,30 +1,35 @@
 import ExpenseModel from "../models/expense.model.js";
 
 export const addExpense = async (req, res) => {
-  const { amount, category, description, paymentMethod, date } = req.body;
+  let { amount, category, description, paymentMethod, date } = req.body;
 
-  if (!category || !description || !category || !date) {
+  if (!amount || !category || !description || !date) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  if (typeof amount !== "number" || amount <= 0) {
+  const parsedAmount = Number(amount);
+  if (isNaN(parsedAmount) || parsedAmount <= 0) {
     return res
       .status(400)
       .json({ message: "Amount must be a positive number" });
   }
 
   try {
-    const newExpense = await ExpenseModel({
-      amount,
+    const newExpense = new ExpenseModel({
+      amount: parsedAmount,
       description,
       category,
       paymentMethod,
       date,
+      user: req.user.id,
     });
 
-    res.status(200).json({ message: "Expense added successfully", newExpense });
+    await newExpense.save();
+
+    res.status(201).json({ message: "Expense added successfully", newExpense });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error in addExpense:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -33,7 +38,7 @@ export const getAllExpenses = async (req, res) => {
     const allExpenses = await ExpenseModel.find().sort({ createdAt: -1 });
     res.status(200).json({ message: "All Expenses", allExpenses });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

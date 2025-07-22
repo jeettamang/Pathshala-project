@@ -3,13 +3,13 @@ const useSidebarLinks = () => {
     {
       to: "/admin/dashboard",
       iconPath:
-        "M3 12l9-9 9 9M4 10v10a1 1 0 001 1h3m10-11v10a1 1 0 01-1 1h-3m-6 0h6", // SVG path for icon
+        "M3 12l9-9 9 9M4 10v10a1 1 0 001 1h3m10-11v10a1 1 0 01-1 1h-3m-6 0h6",
       label: "Dashboard",
     },
     {
       to: "/admin/users/create",
       iconPath:
-        "M18 9v6m3-3h-6m-2 5a4 4 0 10-8 0m8 0a4 4 0 01-8 0m8 0H4m16-7a4 4 0 11-8 0 4 4 0 018 0z", // another SVG icon
+        "M18 9v6m3-3h-6m-2 5a4 4 0 10-8 0m8 0a4 4 0 01-8 0m8 0H4m16-7a4 4 0 11-8 0 4 4 0 018 0z",
       label: "Add user",
     },
     {

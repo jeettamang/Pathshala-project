@@ -19,6 +19,7 @@ const useLogin = () => {
       ...payload,
       [e.target.name]: e.target.value,
     });
+    setMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -27,28 +28,24 @@ const useLogin = () => {
     const { email, password } = payload;
 
     if (!email || !password) {
-      setMessage("Email or Password mismatch");
+      setMessage("Please enter both email and password");
       return;
     }
 
     try {
       const resData = await instance.post(URLS.LOGIN, payload);
-      if (resData.status === 200) {
-        toast.success("Admin login successful");
+      toast.success("Admin login successful");
 
-        setPayload({
-          email: "",
-          password: "",
-        });
+      setPayload({
+        email: "",
+        password: "",
+      });
 
-        localStorage.setItem("token", resData.data.token);
-
-        setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 1000);
-      } else {
-        toast.error("Admin login error");
-      }
+      localStorage.setItem("token", resData.data.token);
+      localStorage.setItem("user", JSON.stringify(resData.data.user));
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 1000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error in login request");
     }

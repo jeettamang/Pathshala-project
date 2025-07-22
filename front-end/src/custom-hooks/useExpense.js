@@ -20,6 +20,7 @@ const useExpense = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
 
     const finalAmount = {
       ...expense,
@@ -28,7 +29,9 @@ const useExpense = () => {
 
     //backed-api
     try {
-      const expenseRes = await instance.post(URLS.EXPENSE, finalAmount);
+      const expenseRes = await instance.post(URLS.EXPENSE, finalAmount, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log(expenseRes);
       setMsg("Expense Created successfully");
       toast("Expense successfully created");

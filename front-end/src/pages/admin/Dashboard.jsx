@@ -37,7 +37,11 @@ const Dashboard = () => {
         />
         <SummaryCards
           label="Available Balance"
-          amount={summary.income - summary.expenses}
+          amount={
+            summary.income < summary.expenses
+              ? 0
+              : summary.income - summary.expenses
+          }
           color="bg-blue-100"
         />
         <SummaryCards

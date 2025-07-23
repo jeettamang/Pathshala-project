@@ -115,7 +115,7 @@ const ExpensesForm = () => {
                 <option value="">Select payment Method</option>
                 <option value="Esewa">Esewa</option>
                 <option value="Bank transfer">Bank transfer</option>
-                <option value="khalti">Khalti</option>
+                <option value="Khalti">Khalti</option>
                 <option value="Cash">Cash</option>
               </select>
             </div>

@@ -7,7 +7,9 @@ const TextFields = ({
   placeholder,
   label,
   type = "text",
+  required,
   onChange,
+  ...rest
 }) => {
   return (
     <div className="mb-2">
@@ -18,9 +20,11 @@ const TextFields = ({
         type={type}
         name={name}
         id={id}
+        required={required}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        {...rest}
         className="block w-full py-2 border rounded-lg focus:outline-none pl-1"
       />
     </div>

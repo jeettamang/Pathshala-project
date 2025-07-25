@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useSidebarLinks from "../custom-hooks/useSidebarLinks";
+import useSidebarLinks from "../functions.js/useSidebarLinks";
 
 const Sidebar = () => {
   const links = useSidebarLinks();

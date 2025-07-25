@@ -6,5 +6,5 @@ const instance = axios.create({
   timeout: 5000,
   timeoutErrorMessage: "API Fetching time out",
 });
-
+console.log("BASE_URL", BASE_URL);
 export default instance;

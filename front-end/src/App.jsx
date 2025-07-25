@@ -12,6 +12,7 @@ import AddUser from "./pages/admin/users/AddUser";
 import Register from "./pages/auth/Register";
 import ManageCategory from "./pages/ManageCategory";
 import Profile from "./pages/admin/Profile";
+import UserDetail from "./pages/admin/users/UserDetails";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="users">
           <Route index element={<List />} />
           <Route path="create" element={<AddUser />} />
+          <Route path=":id" element={<UserDetail />} />
         </Route>
       </Route>
 

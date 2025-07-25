@@ -1,6 +1,7 @@
 import UserModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import sendInvoice from "../utils/sendInvoice.js";
+import CourseModel from "../models/course.model.js";
 
 //Add user
 export const addUserController = async (req, res) => {
@@ -13,17 +14,15 @@ export const addUserController = async (req, res) => {
         success: false,
       });
     }
-    const courseFees = {
-      "Mern stack development": 15000,
-      "python with Django": 7000,
-      Nextjs: 1499,
-      Reactjs: 1999,
-      "AI/ML": 4999,
-      "Digital marketing": 2499,
-      "Graphics designing": 1499,
-    };
-
-    const totalFee = courseFees[course] || 0;
+    const selectedCourse = await CourseModel.findOne({ name: course });
+    if (!selectedCourse) {
+      return res.status(400).json({
+        error: true,
+        messsage: "Select the valid course",
+        success: false,
+      });
+    }
+    const totalFee = selectedCourse.fee;
     const remaining = totalFee - Number(payment);
 
     const existingUser = await UserModel.findOne({ email });
@@ -82,6 +81,30 @@ export const getAllUsers = async (req, res) => {
     });
   }
 };
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch user",
+      error: error.message,
+    });
+  }
+};
+
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

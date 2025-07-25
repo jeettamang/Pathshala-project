@@ -48,6 +48,7 @@ const useLogin = () => {
       }, 1000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error in login request");
+      toast.error("Invalid credentials");
     }
   };
 

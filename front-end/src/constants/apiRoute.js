@@ -7,6 +7,7 @@ export const URLS = {
   LOGIN: API_URL + "/admin/login",
   ADD_USER: API_URL + "/users/create",
   USER_LIST: API_URL + "/users/get-all",
+  USER_DETAIL: (id) => `${API_URL}/users/${id}`,
   EXPENSE: API_URL + "/add-expense",
   ADD_INCOME: API_URL + "/add-income",
   GET_BALANCE: API_URL + "/get-balance",
@@ -16,4 +17,5 @@ export const URLS = {
   GET_CATEGORIES: API_URL + "/all-categories",
   DEL_CATEGORY: API_URL + "/del-category",
   ADMIN_PROFILE: API_URL + "/admin/profile",
+  GET_COURSES: API_URL + "/courses/get-all",
 };

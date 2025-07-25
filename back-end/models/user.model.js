@@ -24,6 +24,24 @@ const userSchema = new mongoose.Schema(
     remaining: {
       type: Number,
     },
+    courseDuration: {
+      type: String,
+      default: "",
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    internship: {
+      status: {
+        type: Boolean,
+        default: false,
+      },
+      certificate: {
+        type: String,
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,

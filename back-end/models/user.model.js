@@ -20,9 +20,11 @@ const userSchema = new mongoose.Schema(
     },
     payment: {
       type: Number,
+      default: 0,
     },
     remaining: {
       type: Number,
+      default: 0,
     },
     courseDuration: {
       type: String,

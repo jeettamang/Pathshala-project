@@ -6,7 +6,17 @@ import CourseModel from "../models/course.model.js";
 //Add user
 export const addUserController = async (req, res) => {
   try {
-    const { name, email, password, course, payment } = req.body;
+    const {
+      name,
+      email,
+      password,
+      course,
+      payment,
+      completed = false,
+      internshipStatus = false,
+      certificate = "",
+    } = req.body;
+
     if (!name || !email || !password || !course) {
       return res.status(400).json({
         error: true,
@@ -14,21 +24,43 @@ export const addUserController = async (req, res) => {
         success: false,
       });
     }
-    const selectedCourse = await CourseModel.findOne({ name: course });
+
+    const selectedCourse = await CourseModel.findOne({
+      name: { $regex: new RegExp(`^${course.trim()}$`, "i") },
+    });
     if (!selectedCourse) {
       return res.status(400).json({
         error: true,
-        messsage: "Select the valid course",
+        message: "Select a valid course",
         success: false,
       });
     }
+
     const totalFee = selectedCourse.fee;
-    const remaining = totalFee - Number(payment);
+
+    // Validate payment
+    const paymentNumber = Number(payment);
+    if (isNaN(paymentNumber) || paymentNumber < 0) {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid payment amount",
+        success: false,
+      });
+    }
+    if (paymentNumber > totalFee) {
+      return res.status(400).json({
+        error: true,
+        message: "Payment cannot exceed total course fee",
+        success: false,
+      });
+    }
+
+    const remaining = totalFee - paymentNumber;
 
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
-        message: "User already exist",
+        message: "User already exists",
         error: true,
         success: false,
       });
@@ -41,29 +73,35 @@ export const addUserController = async (req, res) => {
       email,
       password: hashedPassword,
       course,
-      payment,
+      payment: paymentNumber,
       remaining,
+      courseDuration: selectedCourse.duration || "",
+      completed,
+      internship: {
+        status: internshipStatus,
+        certificate,
+      },
     });
 
     await sendInvoice({
       to: email,
       userName: name,
       courseName: course,
-      amount: payment,
+      amount: paymentNumber,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User registered successfully",
       newUser,
+      success: true,
     });
   } catch (error) {
+    console.log("Registration Error:", error);
     return res.status(500).json({
       message: "Error in registration",
-
       error: error.message,
     });
   }
-  console.log(error);
 };
 
 export const getAllUsers = async (req, res) => {
@@ -81,6 +119,7 @@ export const getAllUsers = async (req, res) => {
     });
   }
 };
+
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -120,26 +159,34 @@ export const deleteUser = async (req, res) => {
     });
   }
 };
+
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
+
     const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
       new: true,
+      runValidators: true,
     });
-    if (!updateData) {
-      return res.status(400).json({
+
+    if (!updatedUser) {
+      return res.status(404).json({
         message: "User not found",
+        success: false,
       });
     }
+
     res.status(200).json({
       message: "User updated successfully",
       updatedUser,
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: "Error updating user",
       error: error.message,
+      success: false,
     });
   }
 };

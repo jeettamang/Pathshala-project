@@ -14,7 +14,7 @@ router
   .post("/create", addUserController)
   .get("/get-all", getAllUsers)
   .delete("/delete/:id", deleteUser)
-  .put("/update", updateUser)
-  .get("/:id", getUserById);
+  .put("/update/:id", updateUser)
+  .get("/detail/:id", getUserById);
 
 export default router;

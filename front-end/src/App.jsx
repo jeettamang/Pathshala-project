@@ -38,7 +38,7 @@ const App = () => {
         <Route path="users">
           <Route index element={<List />} />
           <Route path="create" element={<AddUser />} />
-          <Route path=":id" element={<UserDetail />} />
+          <Route path="detail/:id" element={<UserDetail />} />
         </Route>
       </Route>
 

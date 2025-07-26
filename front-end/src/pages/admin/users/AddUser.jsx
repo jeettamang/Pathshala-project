@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import instance from "../../../utils/axios";
 import { URLS } from "../../../constants/apiRoute";
 import { ToastContainer } from "react-toastify";
@@ -16,6 +16,8 @@ const AddUser = () => {
     payment: "",
   });
   const [message, setMessage] = useState("");
+  const [courseFee, setCourseFee] = useState(0);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -24,8 +26,9 @@ const AddUser = () => {
       setPayload({
         ...payload,
         course: value,
-        payment: selected?.fee || "Fee not set",
+        payment: "",
       });
+      setCourseFee(selected?.fee || 0);
     } else {
       setPayload({
         ...payload,
@@ -33,20 +36,32 @@ const AddUser = () => {
       });
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { name, email, password, course, payment } = payload;
 
-    if (!name || !email || !password || !course || !payment) {
+    if (!name || !email || !password || !course || payment === "") {
       setMessage("All fields are required");
+      return;
+    }
+
+    const paymentNumber = Number(payment);
+
+    if (
+      isNaN(paymentNumber) ||
+      paymentNumber < 0 ||
+      paymentNumber > courseFee
+    ) {
+      setMessage(`Payment must be a number between 0 and Rs. ${courseFee}`);
       return;
     }
 
     try {
       const finalPayload = {
         ...payload,
-        payment: Number(payload.payment),
+        payment: paymentNumber,
       };
 
       const resData = await instance.post(URLS.ADD_USER, finalPayload);
@@ -59,17 +74,17 @@ const AddUser = () => {
         course: "",
         payment: "",
       });
+      setCourseFee(0);
+      setMessage("");
 
       setTimeout(() => {
         navigate("/admin/dashboard");
       }, 1000);
     } catch (error) {
-      setMessage(
-        error.response?.data?.message ||
-          "Error in fetching the data of registration"
-      );
+      setMessage(error.response?.data?.message || "Error in registering user");
     }
   };
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -89,6 +104,13 @@ const AddUser = () => {
         <h2 className="text-2xl font-semibold text-center mb-6">
           Add new user
         </h2>
+
+        {message && (
+          <p className="text-red-600 font-semibold mb-4 text-center">
+            {message}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit}>
           <TextFields
             type="text"
@@ -102,7 +124,7 @@ const AddUser = () => {
           />
           <TextFields
             type="email"
-            label="Emal"
+            label="Email"
             name="email"
             id="email"
             placeholder="User's email"
@@ -141,17 +163,27 @@ const AddUser = () => {
               </option>
             ))}
           </select>
+
+          {/* full course fee for reference */}
+          {courseFee > 0 && (
+            <p className="text-gray-500 mb-2">
+              Full Course Fee: Rs. {courseFee}
+            </p>
+          )}
+
           <TextFields
             type="number"
-            label="Payment"
+            label="Payment (partial allowed)"
             name="payment"
             id="payment"
-            placeholder="Auto-filled after course selection"
+            placeholder="Enter amount to pay"
             value={payload.payment}
             onChange={handleChange}
             required
-            readOnly
+            min={0}
+            max={courseFee}
           />
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 mt-4 rounded-lg"

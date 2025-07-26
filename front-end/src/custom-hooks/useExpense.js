@@ -32,7 +32,7 @@ const useExpense = () => {
       const expenseRes = await instance.post(URLS.EXPENSE, finalAmount, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(expenseRes);
+
       setMsg("Expense Created successfully");
       toast("Expense successfully created");
       setExpense({

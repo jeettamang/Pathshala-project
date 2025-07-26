@@ -19,7 +19,7 @@ const List = () => {
     fetchUsers();
   }, []);
   const handleViewUser = (userId) => {
-    navigate(`/admin/users/${userId}`);
+    navigate(`/admin/users/detail/${userId}`);
   };
   return (
     <div className="bg-slate-100 p-4 rounded-xl shadow">

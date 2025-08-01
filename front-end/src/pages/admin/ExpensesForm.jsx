@@ -2,7 +2,7 @@ import { ToastContainer, toast } from "react-toastify";
 import useExpense from "../../custom-hooks/useExpense";
 
 const ExpensesForm = () => {
-  const { expense, handleChange, handleSubmit } = useExpense();
+  const { expense, handleChange, handleSubmit, categories } = useExpense();
 
   return (
     <>
@@ -49,12 +49,11 @@ const ExpensesForm = () => {
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               >
                 <option value="">Select Category</option>
-                <option value="electricity">Electricity</option>
-                <option value="Water">Water</option>
-                <option value="Salary">Salary</option>
-                <option value="Rent">Rent</option>
-                <option value="Maintenance">Maintenance</option>
-                <option value="Misc">Miscellaneous</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             {/* description */}

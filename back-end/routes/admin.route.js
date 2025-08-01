@@ -4,9 +4,10 @@ import {
   loginController,
   registerAdmin,
 } from "../controllers/admin.controller.js";
-import { adminVerify } from "../controllers/adminVerify.js";
+
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/isAdmin.js";
+import { adminVerify } from "../utils/adminVerify.js";
 
 const router = express.Router();
 

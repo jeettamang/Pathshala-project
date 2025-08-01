@@ -29,9 +29,9 @@ const useSidebarLinks = () => {
       label: "User list",
     },
     {
-      to: "/admin/category",
+      to: "/admin/course-category",
       iconPath: "M7 7h.01M3 11V5a2 2 0 012-2h6l8 8-6 6-8-8z",
-      label: "Category",
+      label: "Categories",
     },
   ];
 };

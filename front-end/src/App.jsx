@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 
 import ExpensesForm from "./pages/admin/ExpensesForm";
@@ -10,14 +9,14 @@ import IncomeForm from "./pages/admin/Incomes";
 import List from "./pages/admin/users/List";
 import AddUser from "./pages/admin/users/AddUser";
 import Register from "./pages/auth/Register";
-import ManageCategory from "./pages/ManageCategory";
+import CourseCategory from "./pages/admin/CourseCategory";
 import Profile from "./pages/admin/Profile";
 import UserDetail from "./pages/admin/users/UserDetails";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Login />} />
 
       <Route path="/auth">
         <Route path="register" element={<Register />} />
@@ -32,7 +31,7 @@ const App = () => {
 
         <Route path="add-income" element={<IncomeForm />} />
         <Route path="expense" element={<ExpensesForm />} />
-        <Route path="category" element={<ManageCategory />} />
+        <Route path="course-category" element={<CourseCategory />} />
         <Route path="profile" element={<Profile />} />
 
         <Route path="users">

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import instance from "../utils/axios";
-import { URLS } from "../constants/apiRoute";
+import React from "react";
+import { URLS } from "../../constants/apiRoute";
+import instance from "../../utils/axios";
 
-const ManageCategory = () => {
+const ExpenseCategory = () => {
   const [category, setCategory] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +10,7 @@ const ManageCategory = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const resCat = await instance.get(URLS.GET_CATEGORIES);
+      const resCat = await instance.get(URLS.GET_EXPENSES);
       setCategories(resCat.data);
       console.log(resCat.data);
     } catch (error) {
@@ -26,7 +26,7 @@ const ManageCategory = () => {
   const addCategory = async (e) => {
     e.preventDefault();
     try {
-      const newCat = await instance.post(URLS.ADD_CATEGORY, { name: category });
+      const newCat = await instance.post(URLS.EXPENSE, { name: category });
       console.log(newCat);
       setCategory("");
       fetchCategories();
@@ -45,7 +45,7 @@ const ManageCategory = () => {
   };
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-4 text-center">Manage Categories</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Income Categories</h2>
       <form onSubmit={addCategory} className="flex gap-3 mb-6">
         <input
           type="text"
@@ -85,4 +85,4 @@ const ManageCategory = () => {
   );
 };
 
-export default ManageCategory;
+export default ExpenseCategory;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { URLS } from "../constants/apiRoute";
 import instance from "../utils/axios";
@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const useExpense = () => {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
   const [expense, setExpense] = useState({
     date: "",
     category: "",
@@ -14,6 +15,20 @@ const useExpense = () => {
     paymentMethod: "",
   });
   const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await instance.get(URLS.GET_EXPENSES);
+        setCategories(res.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Failed to load categories");
+      }
+    };
+    fetchCategories();
+  });
+
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
   };
@@ -53,10 +68,12 @@ const useExpense = () => {
       toast("Something went wrong");
     }
   };
+
   return {
     expense,
     handleChange,
     handleSubmit,
+    categories,
   };
 };
 

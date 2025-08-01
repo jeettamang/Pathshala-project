@@ -1,4 +1,4 @@
-import CategoryModel from "../models/category.model.js";
+import CourseCategoryModel from "../models/coursesCategory.model.js";
 
 const category = async (req, res) => {
   const { name } = req.body;
@@ -9,13 +9,13 @@ const category = async (req, res) => {
         message: "Category name is required",
       });
     }
-    const existCat = await CategoryModel.findOne({ name });
+    const existCat = await CourseCategoryModel.findOne({ name });
     if (existCat) {
       return res.status(400).json({
         message: "Category already exist",
       });
     }
-    const addCat = await CategoryModel.create({
+    const addCat = await CourseCategoryModel.create({
       name,
     });
     res.status(200).json({
@@ -32,7 +32,7 @@ const category = async (req, res) => {
 
 const getAllCat = async (req, res) => {
   try {
-    const categories = await CategoryModel.find();
+    const categories = await CourseCategoryModel.find();
     res.status(200).json(categories);
   } catch (error) {
     res
@@ -44,7 +44,7 @@ const getAllCat = async (req, res) => {
 const deleteCat = async (req, res) => {
   try {
     const { id } = req.params;
-    const delCat = await CategoryModel.findByIdAndDelete(id);
+    const delCat = await CourseCategoryModel.findByIdAndDelete(id);
     res.status(200).json({
       message: "Category deleted successful",
       delCat,

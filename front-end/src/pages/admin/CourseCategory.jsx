@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import instance from "../../utils/axios";
 import { URLS } from "../../constants/apiRoute";
+import { toast } from "react-toastify";
 
 const CourseCategory = () => {
-  const [category, setCategory] = useState([]);
+  const [name, setName] = useState("");
+  const [fee, setFee] = useState("");
+  const [duration, setDuration] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,59 +16,93 @@ const CourseCategory = () => {
       const resCat = await instance.get(URLS.GET_COURSE_CATEGORIES);
       setCategories(resCat.data);
       console.log(resCat.data);
+      toast.success("Cateogry fetched succeed");
     } catch (error) {
       console.log("Failed to fetch categories");
+      toast.error("Failed to fetch Cateogry ");
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const addCategory = async (e) => {
     e.preventDefault();
+
+    const parsedFee = Number(fee);
+
+    // ✅ Fixed validation
+    if (!name.trim() || isNaN(parsedFee) || !duration.trim()) {
+      toast.error("Please enter valid name, fee, and duration.");
+      return;
+    }
+
     try {
-      const newCat = await instance.post(URLS.COURSE_CATEGORY, {
-        name: category,
+      const res = await instance.post(URLS.COURSE_CATEGORY, {
+        name,
+        fee: parsedFee,
+        duration,
       });
-      console.log(newCat.data);
-      setCategory("");
+      toast.success("Category added successfully");
+      setName("");
+      setFee("");
+      setDuration("");
       fetchCategories();
+      console.log("Sending:", { name, fee: parsedFee, duration });
     } catch (error) {
-      console.log(
-        "Failed to add category",
-        error.response?.data || error.message
-      );
+      toast.error(error?.response?.data?.message || "Failed to add category");
+      console.error("Add category error:", error);
     }
   };
 
   const delCategory = async (id) => {
     try {
-      const deletedcat = await instance.delete(`${URLS.DEL_COURSE}/${id}`);
+      await instance.delete(URLS.DEL_COURSE(id));
+      fetchCategories();
+      toast.success("Cateogry deleted succeed");
     } catch (error) {
-      toast.error("Failed to delete category");
+      console.error("Failed to delete category", error);
+      toast.error("Cateogry delete failed");
     }
-    fetchCategories();
   };
+
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
       <h2 className="text-2xl font-bold mb-4 text-center">Course Categories</h2>
-      <form onSubmit={addCategory} className="flex gap-3 mb-6">
+
+      <form onSubmit={addCategory} className="flex flex-col gap-3 mb-6">
         <input
           type="text"
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Add new category"
-          value={category}
-          className="flex-1 px-4 py-2 border rounded-md"
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Category name"
+          value={name}
+          className="px-4 py-2 border rounded-md"
+        />
+        <input
+          type="number"
+          onChange={(e) => setFee(e.target.value)}
+          placeholder="Course fee (NPR)"
+          value={fee}
+          className="px-4 py-2 border rounded-md"
+        />
+        <input
+          type="text"
+          onChange={(e) => setDuration(e.target.value)}
+          placeholder="Course duration (e.g. 3 months)"
+          value={duration}
+          className="px-4 py-2 border rounded-md"
         />
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
         >
-          Add
+          Add Category
         </button>
       </form>
+
       {loading ? (
         <div className="text-center py-10 text-gray-500">Loading...</div>
       ) : (
@@ -75,7 +112,13 @@ const CourseCategory = () => {
               key={category._id}
               className="flex justify-between items-center py-2"
             >
-              <span>{category.name}</span>
+              <div>
+                <p className="font-semibold">{category.name}</p>
+                <p className="text-sm text-gray-600">Fee: Rs. {category.fee}</p>
+                <p className="text-sm text-gray-600">
+                  Duration: {category.duration}
+                </p>
+              </div>
               <button
                 onClick={() => delCategory(category._id)}
                 className="text-red-600 hover:underline cursor-pointer"

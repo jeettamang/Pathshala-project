@@ -8,6 +8,15 @@ const coursesSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    fee: {
+      type: Number,
+      required: true,
+    },
+    duration: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

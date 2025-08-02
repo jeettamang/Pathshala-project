@@ -7,7 +7,6 @@ import { connectionDB } from "./config/database.js";
 import adminRoutes from "./routes/admin.route.js";
 import incomeRoutes from "./routes/income.route.js";
 import courseCategoryRoutes from "./routes/courseCategory.route.js";
-import courseRoutes from "./routes/course.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 import expenseRoutes from "./routes/expense.route.js";
 import expenseCateRoutes from "./routes/expense.cate.route.js";
@@ -33,8 +32,7 @@ app
   .post("/api/v1/expense", expenseCateRoutes)
   .use("/api/v1", incomeRoutes)
   .use("/api/v1", dashboardRoutes)
-  .use("/api/v1", courseCategoryRoutes)
-  .use("/api/v1/courses", courseRoutes);
+  .use("/api/v1", courseCategoryRoutes);
 
 //Global error handling
 app.use((error, req, res, next) => {

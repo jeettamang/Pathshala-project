@@ -1,12 +1,12 @@
 import CourseCategoryModel from "../models/coursesCategory.model.js";
 
 const category = async (req, res) => {
-  const { name } = req.body;
+  const { name, fee, duration } = req.body;
 
   try {
-    if (!name) {
+    if (!name || !fee || !duration) {
       return res.status(400).json({
-        message: "Category name is required",
+        message: "Name, fee and duration are required",
       });
     }
     const existCat = await CourseCategoryModel.findOne({ name });
@@ -17,6 +17,8 @@ const category = async (req, res) => {
     }
     const addCat = await CourseCategoryModel.create({
       name,
+      fee,
+      duration,
     });
     res.status(200).json({
       message: "Category created successfully",

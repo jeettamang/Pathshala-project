@@ -1,8 +1,7 @@
 import UserModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import sendInvoice from "../utils/sendInvoice.js";
-import CourseModel from "../models/course.model.js";
-
+import CourseCategoryModel from "../models/coursesCategory.model.js";
 //Add user
 export const addUserController = async (req, res) => {
   try {
@@ -10,8 +9,8 @@ export const addUserController = async (req, res) => {
       name,
       email,
       password,
-      course,
       payment,
+      course, // add course
       completed = false,
       internshipStatus = false,
       certificate = "",
@@ -25,43 +24,33 @@ export const addUserController = async (req, res) => {
       });
     }
 
-    const selectedCourse = await CourseModel.findOne({
-      name: { $regex: new RegExp(`^${course.trim()}$`, "i") },
-    });
-    if (!selectedCourse) {
-      return res.status(400).json({
-        error: true,
-        message: "Select a valid course",
-        success: false,
-      });
-    }
-
-    const totalFee = selectedCourse.fee;
-
-    // Validate payment
-    const paymentNumber = Number(payment);
-    if (isNaN(paymentNumber) || paymentNumber < 0) {
-      return res.status(400).json({
-        error: true,
-        message: "Invalid payment amount",
-        success: false,
-      });
-    }
-    if (paymentNumber > totalFee) {
-      return res.status(400).json({
-        error: true,
-        message: "Payment cannot exceed total course fee",
-        success: false,
-      });
-    }
-
-    const remaining = totalFee - paymentNumber;
-
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
         message: "User already exists",
         error: true,
+        success: false,
+      });
+    }
+
+    const selectedCourse = await CourseCategoryModel.findOne({ name: course });
+    if (!selectedCourse) {
+      return res.status(400).json({
+        message: "Selected course not found",
+        success: false,
+      });
+    }
+
+    const courseFee = selectedCourse.fee;
+    const paymentNumber = Number(payment);
+
+    if (
+      isNaN(paymentNumber) ||
+      paymentNumber < 0 ||
+      paymentNumber > courseFee
+    ) {
+      return res.status(400).json({
+        message: `Payment must be a number between 0 and Rs. ${courseFee}`,
         success: false,
       });
     }
@@ -74,7 +63,7 @@ export const addUserController = async (req, res) => {
       password: hashedPassword,
       course,
       payment: paymentNumber,
-      remaining,
+      remaining: courseFee - paymentNumber,
       courseDuration: selectedCourse.duration || "",
       completed,
       internship: {

@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import instance from "../../../utils/axios";
 import { URLS } from "../../../constants/apiRoute";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import TextFields from "../../../components/TextFields";
 
 const AddUser = () => {
-  const [courses, setCourses] = useState([]);
-  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
   const [payload, setPayload] = useState({
     name: "",
     email: "",
@@ -17,23 +16,35 @@ const AddUser = () => {
   });
   const [message, setMessage] = useState("");
   const [courseFee, setCourseFee] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const resCat = await instance.get(URLS.GET_COURSE_CATEGORIES);
+      setCategories(resCat.data);
+      toast.success("Course categories fetched");
+    } catch (error) {
+      toast.error("Failed to fetch course categories");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "course") {
-      const selected = courses.find((c) => c.name === value);
-      setPayload({
-        ...payload,
-        course: value,
-        payment: "",
-      });
+      const selected = categories.find((cat) => cat.name === value);
+      setPayload({ ...payload, course: value, payment: "" });
       setCourseFee(selected?.fee || 0);
     } else {
-      setPayload({
-        ...payload,
-        [name]: value,
-      });
+      setPayload({ ...payload, [name]: value });
     }
   };
 
@@ -54,7 +65,7 @@ const AddUser = () => {
       paymentNumber < 0 ||
       paymentNumber > courseFee
     ) {
-      setMessage(`Payment must be a number between 0 and Rs. ${courseFee}`);
+      setMessage(`Payment must be between 0 and Rs. ${courseFee}`);
       return;
     }
 
@@ -64,8 +75,7 @@ const AddUser = () => {
         payment: paymentNumber,
       };
 
-      const resData = await instance.post(URLS.ADD_USER, finalPayload);
-      console.log(resData);
+      await instance.post(URLS.ADD_USER, finalPayload);
 
       setPayload({
         name: "",
@@ -76,26 +86,13 @@ const AddUser = () => {
       });
       setCourseFee(0);
       setMessage("");
+      toast.success("User added successfully");
 
-      setTimeout(() => {
-        navigate("/admin/dashboard");
-      }, 1000);
+      setTimeout(() => navigate("/admin/dashboard"), 1000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error in registering user");
     }
   };
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await instance.get(URLS.GET_COURSES);
-        setCourses(response.data.data || []);
-      } catch (error) {
-        console.log("Error in fetching courses", error);
-      }
-    };
-    fetchCourses();
-  }, []);
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
@@ -142,6 +139,7 @@ const AddUser = () => {
             onChange={handleChange}
             required
           />
+
           <label
             className="block text-gray-700 font-medium mb-1"
             htmlFor="course"
@@ -149,22 +147,21 @@ const AddUser = () => {
             Course
           </label>
           <select
-            id="course"
             name="course"
+            id="course"
             value={payload.course}
             onChange={handleChange}
-            required
             className="block w-full py-2 px-3 border rounded-lg focus:outline-none mb-2"
+            required
           >
             <option value="">Select course</option>
-            {courses.map((course) => (
-              <option key={course._id} value={course.name}>
-                {course.name}
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
               </option>
             ))}
           </select>
 
-          {/* full course fee for reference */}
           {courseFee > 0 && (
             <p className="text-gray-500 mb-2">
               Full Course Fee: Rs. {courseFee}

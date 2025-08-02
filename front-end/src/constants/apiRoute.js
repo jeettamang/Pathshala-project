@@ -32,7 +32,7 @@ export const URLS = {
   GET_DASHBOARD: API_URL + "/dashboard-summary",
 
   //course
-  COURSE_CATEGORY: API_URL + "/add-category",
-  GET_COURSE_CATEGORIES: API_URL + "/all-categories",
-  DEL_COURSE: API_URL + "/delete-category",
+  COURSE_CATEGORY: API_URL + "/course/add-category",
+  GET_COURSE_CATEGORIES: API_URL + "/course/all-categories",
+  DEL_COURSE: (id) => `${API_URL}/course/del-category/${id}`,
 };

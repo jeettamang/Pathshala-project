@@ -8,8 +8,8 @@ import {
 const router = express.Router();
 
 router
-  .post("/add-category", category)
-  .get("/all-categories", getAllCat)
-  .delete("/del-category/:id", deleteCat);
+  .post("/course/add-category", category)
+  .get("/course/all-categories", getAllCat)
+  .delete("/course/del-category/:id", deleteCat);
 
 export default router;

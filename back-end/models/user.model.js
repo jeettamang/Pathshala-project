@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     course: {
       type: String,
+      required: [true, "Course is required"],
     },
     payment: {
       type: Number,

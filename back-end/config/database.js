@@ -26,11 +26,6 @@ export const connectionDB = async () => {
       });
       console.log("Admin seeded successfully");
     }
-    const existingCourse = await CourseModel.find();
-    if (existingCourse.length === 0) {
-      await CourseModel.insertMany(courses);
-      console.log("Course seeded successfully");
-    }
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
   }

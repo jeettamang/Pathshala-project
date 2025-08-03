@@ -9,7 +9,8 @@ import incomeRoutes from "./routes/income.route.js";
 import courseCategoryRoutes from "./routes/courseCategory.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 import expenseRoutes from "./routes/expense.route.js";
-import expenseCateRoutes from "./routes/expense.cate.route.js";
+import expenseCategoryRoutes from "./routes/expenseCategory.route.js";
+import incomeCategoryRoutes from "./routes/incomeCategory.route.js";
 import userRoutes from "./routes/user.route.js";
 
 dotenv.config();
@@ -29,8 +30,9 @@ app
   .use("/api/v1/admin", adminRoutes)
   .use("/api/v1/users", userRoutes)
   .use("/api/v1", expenseRoutes)
-  .post("/api/v1/expense", expenseCateRoutes)
+  .post("/api/v1/expense", expenseCategoryRoutes)
   .use("/api/v1", incomeRoutes)
+  .use("/api/v1/income", incomeCategoryRoutes)
   .use("/api/v1", dashboardRoutes)
   .use("/api/v1", courseCategoryRoutes);
 

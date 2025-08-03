@@ -3,7 +3,8 @@ import {
   addCategory,
   deleteCategory,
   getCategories,
-} from "../controllers/expense.cate.controller.js";
+} from "../controllers/expenseCategory.controller.js";
+
 const router = express.Router();
 
 router

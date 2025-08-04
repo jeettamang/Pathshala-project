@@ -19,7 +19,7 @@ const useExpense = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await instance.get(URLS.GET_EXPENSES);
+        const res = await instance.get(URLS.GET_EXPENSE_CATEGORIES);
         setCategories(res.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -27,7 +27,7 @@ const useExpense = () => {
       }
     };
     fetchCategories();
-  });
+  }, []);
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });

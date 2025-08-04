@@ -50,11 +50,11 @@ const useIncome = () => {
 
   const allCategories = async () => {
     try {
-      const fetchCategories = await instance.get(URLS.GET_CATEGORIES, {
+      const fetchCategories = await instance.get(URLS.GET_INCOME_CATEGORIES, {
         name: categories,
       });
-      setCategories(fetchCategories.data);
-      console.log(fetchCategories);
+      setCategories(fetchCategories.data.categories);
+      console.log(fetchCategories.data.categories);
     } catch (error) {}
   };
   useEffect(() => {

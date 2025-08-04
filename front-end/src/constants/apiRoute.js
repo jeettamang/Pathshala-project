@@ -18,15 +18,17 @@ export const URLS = {
   USER_DETAIL: (id) => `${API_URL}/users/detail/${id}`,
   USER_EDIT: (id) => `${API_URL}/users/edit/${id}`,
 
-  //expenses
-  EXPENSE: API_URL + "/expense/add-category",
-  GET_EXPENSES: API_URL + "/expense/all-categories",
-  DEL_EXPENSE: (id) => `${API_URL}/expense/delete-category/${id}`,
+  //Expenses category
+  ADD_EXPENSE: API_URL + "/add-category",
+  ADD_EXPENSE_CATEGORY: API_URL + "/expense/add-category",
+  GET_EXPENSE_CATEGORIES: API_URL + "/expense/all-categories",
+  DEL_EXPENSE_CATEGORY: (id) => `${API_URL}/expense/delete-category/${id}`,
 
   //incomes
   ADD_INCOME: API_URL + "/add-income",
-  GET_INCOME: API_URL + "/all-income",
-  DEL_INCOME: (id) => `${API_URL}/delete-income/${id}`,
+  ADD_INCOME_CATEGORY: API_URL + "/income/add-category",
+  GET_INCOME_CATEGORIES: API_URL + "/income/all-categories",
+  DEL_INCOME_CATEGORY: (id) => `${API_URL}/expense/delete/${id}`,
 
   GET_BALANCE: API_URL + "/get-balance",
   GET_DASHBOARD: API_URL + "/dashboard-summary",

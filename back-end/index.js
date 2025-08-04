@@ -30,7 +30,7 @@ app
   .use("/api/v1/admin", adminRoutes)
   .use("/api/v1/users", userRoutes)
   .use("/api/v1", expenseRoutes)
-  .post("/api/v1/expense", expenseCategoryRoutes)
+  .use("/api/v1/expense", expenseCategoryRoutes)
   .use("/api/v1", incomeRoutes)
   .use("/api/v1/income", incomeCategoryRoutes)
   .use("/api/v1", dashboardRoutes)

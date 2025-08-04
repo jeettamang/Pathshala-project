@@ -12,6 +12,9 @@ import Register from "./pages/auth/Register";
 import CourseCategory from "./pages/admin/CourseCategory";
 import Profile from "./pages/admin/Profile";
 import UserDetail from "./pages/admin/users/UserDetails";
+import ExpenseCategory from "./pages/admin/ExpenseCategory";
+import IncomeCategory from "./pages/admin/IncomeCategory";
+import Categories from "./pages/admin/Categories";
 
 const App = () => {
   return (
@@ -31,7 +34,10 @@ const App = () => {
 
         <Route path="add-income" element={<IncomeForm />} />
         <Route path="expense" element={<ExpensesForm />} />
-        <Route path="course-category" element={<CourseCategory />} />
+        <Route path="all-categories" element={<Categories />} />
+        {/* <Route path="course-category" element={<CourseCategory />} />
+        <Route path="expense-category" element={<ExpenseCategory />} />
+        <Route path="income-category" element={<IncomeCategory />} /> */}
         <Route path="profile" element={<Profile />} />
 
         <Route path="users">

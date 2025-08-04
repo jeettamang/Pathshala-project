@@ -1,6 +1,8 @@
 import React from "react";
 import { URLS } from "../../constants/apiRoute";
 import instance from "../../utils/axios";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const ExpenseCategory = () => {
   const [category, setCategory] = useState([]);
@@ -10,7 +12,7 @@ const ExpenseCategory = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const resCat = await instance.get(URLS.GET_EXPENSES);
+      const resCat = await instance.get(URLS.GET_EXPENSE_CATEGORIES);
       setCategories(resCat.data);
       console.log(resCat.data);
     } catch (error) {
@@ -26,7 +28,9 @@ const ExpenseCategory = () => {
   const addCategory = async (e) => {
     e.preventDefault();
     try {
-      const newCat = await instance.post(URLS.EXPENSE, { name: category });
+      const newCat = await instance.post(URLS.ADD_EXPENSE_CATEGORY, {
+        name: category,
+      });
       console.log(newCat);
       setCategory("");
       fetchCategories();
@@ -37,7 +41,9 @@ const ExpenseCategory = () => {
 
   const delCategory = async (id) => {
     try {
-      const deletedcat = await instance.delete(`${URLS.DEL_CATEGORY}/${id}`);
+      const deletedcat = await instance.delete(
+        `${URLS.DEL_EXPENSE_CATEGORY}/${id}`
+      );
     } catch (error) {
       toast.error("Failed to delete category");
     }
@@ -45,7 +51,9 @@ const ExpenseCategory = () => {
   };
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-4 text-center">Income Categories</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">
+        Expense Categories
+      </h2>
       <form onSubmit={addCategory} className="flex gap-3 mb-6">
         <input
           type="text"

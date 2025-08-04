@@ -71,7 +71,7 @@ const CourseCategory = () => {
 
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-4 text-center">Course Categories</h2>
+      <h2 className="text-2xl font-bold mb-4 text-cente">Course Categories</h2>
 
       <form onSubmit={addCategory} className="flex flex-col gap-3 mb-6">
         <input

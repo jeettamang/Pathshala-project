@@ -2,8 +2,11 @@ import ExpenseCategoryModel from "../models/expenseCategory.model.js";
 
 export const addCategory = async (req, res) => {
   const { name } = req.body;
+  console.log(name);
 
-  if (!name) return res.status(400).json({ message: "Name is required" });
+  if (!name) {
+    return res.status(400).json({ message: "Name is required" });
+  }
 
   try {
     const categoryExists = await ExpenseCategoryModel.findOne({ name });
@@ -11,7 +14,9 @@ export const addCategory = async (req, res) => {
       return res.status(409).json({ message: "Category already exists" });
     }
 
-    const newCategory = new ExpenseCategoryModel({ name });
+    const newCategory = await ExpenseCategoryModel.create({
+      name,
+    });
     await newCategory.save();
     res.status(201).json({ message: "Category added", category: newCategory });
   } catch (err) {

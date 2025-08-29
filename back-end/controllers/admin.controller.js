@@ -1,6 +1,6 @@
 import AdminModel from "../models/admin.model.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { comparehashed, hashedPassword } from "../utils/bcrypt.js";
+import { genToken } from "../utils/token.js";
 
 //Admin register
 export const registerAdmin = async (req, res, next) => {
@@ -26,11 +26,11 @@ export const registerAdmin = async (req, res, next) => {
         success: false,
       });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPass = hashedPassword(password);
     const newAdmin = await AdminModel.create({
       name,
       email,
-      password: hashedPassword,
+      password: hashedPass,
       role: "super-admin",
     });
 
@@ -64,7 +64,7 @@ export const loginController = async (req, res) => {
         success: false,
       });
     }
-    const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = comparehashed(password, admin.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -74,16 +74,7 @@ export const loginController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      {
-        id: admin._id,
-        email: admin.email,
-        name: admin.name,
-        role: admin.role,
-      },
-      process.env.JWT_TOKEN,
-      { expiresIn: 60 * 60 }
-    );
+    const token = genToken(admin);
 
     return res.status(200).json({
       error: false,

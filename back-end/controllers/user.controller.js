@@ -1,7 +1,8 @@
 import UserModel from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import { hashedPassword } from "../utils/bcrypt.js";
 import sendInvoice from "../utils/sendInvoice.js";
 import CourseCategoryModel from "../models/coursesCategory.model.js";
+
 //Add user
 export const addUserController = async (req, res) => {
   try {
@@ -55,12 +56,12 @@ export const addUserController = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPass = hashedPassword(password);
 
     const newUser = await UserModel.create({
       name,
       email,
-      password: hashedPassword,
+      password: hashedPass,
       course,
       payment: paymentNumber,
       remaining: courseFee - paymentNumber,
